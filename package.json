@@ -17,7 +17,8 @@
     "cron": "^1.1.0",
     "express": "^4.14.0",
     "mongojs": "^2.4.0",
-    "twit": "^2.2.4"
+    "twit": "^2.2.4",
+    "twitter-text": "^1.14.0"
   },
   "devDependencies": {
     "nodemon": "^1.10.0"
