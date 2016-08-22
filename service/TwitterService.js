@@ -7,7 +7,7 @@ let cronJob = cron.CronJob
 
 export function getHashtag() {
   return new Promise((resolve, reject) => {
-    db.twitter.find().limit(2, (err, document) => {
+    db.twitter.find((err, document) => {
       if(!err) {
         let hashtags = new Array(document.length)
         document.forEach((item, index)=> {
