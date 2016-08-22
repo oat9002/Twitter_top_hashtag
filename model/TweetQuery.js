@@ -1,0 +1,5 @@
+// tweetQuery model
+
+// {
+//   query: TEXT
+// }
