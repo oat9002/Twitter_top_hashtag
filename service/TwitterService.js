@@ -40,7 +40,6 @@ export function getRankHashtag() {
           arrHashtag.forEach((hashtag, a) => {
             let dup = false
             topHashtags.forEach((topHashtag, b) => {
-              // console.log(a + hashtag + ': ' + b + topHashtag.text + 'result: ' + (hashtag === topHashtag.text));
               if(hashtag === topHashtag.text) {
                 topHashtag.count = topHashtag.count + 1
                 dup = true
@@ -56,6 +55,24 @@ export function getRankHashtag() {
         }
       })
       resolve(topHashtags)
+    })
+    .catch(err => {
+      reject(err)
+    })
+  })
+}
+
+export function getTopFiveHashtag() {
+  return new Promise((resolve, reject) => {
+    getRankHashtag().then(rankHashtag => {
+      rankHashtag.sort((a, b) => {
+        return b.count - a.count
+      })
+      let topFiveHashtag = new Array(5)
+      rankHashtag.slice(0, 5).forEach((hashtag, index) => {
+        topFiveHashtag[index] = hashtag.text
+      })
+      resolve(topFiveHashtag)
     })
     .catch(err => {
       reject(err)

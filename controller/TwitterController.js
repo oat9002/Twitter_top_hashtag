@@ -20,4 +20,10 @@ twitterRouter.route('/getRankHashtag').get((req, res) => {
   })
 })
 
+twitterRouter.route('/getTopFiveHashtag').get((req, res) => {
+  TwitterService.getTopFiveHashtag().then(topFiveHashtag => {
+    res.send(topFiveHashtag)
+  })
+})
+
 export default twitterRouter
