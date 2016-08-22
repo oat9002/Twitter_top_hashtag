@@ -7,7 +7,7 @@ let cronJob = cron.CronJob
 
 export function getHashtag() {
   return new Promise((resolve, reject) => {
-    db.twitter.find((err, document) => {
+    db.twitter.find().limit(2, (err, document) => {
       if(!err) {
         let hashtags = new Array(document.length)
         document.forEach((item, index)=> {
@@ -29,7 +29,7 @@ export function getRankHashtag() {
     getHashtag().then(hashtags => {
       hashtags.forEach((arrHashtag, index) => {
         if(index == 0) {
-          arrHashtag.forEach((hashtag) => {
+          arrHashtag.forEach(hashtag => {
             let temp = {}
             temp.text = hashtag
             temp.count = 1
@@ -37,18 +37,21 @@ export function getRankHashtag() {
           })
         }
         else {
-          arrHashtag.forEach(hashtag => {
-            topHashtags.forEach(topHashtag => {
+          arrHashtag.forEach((hashtag, a) => {
+            let dup = false
+            topHashtags.forEach((topHashtag, b) => {
+              // console.log(a + hashtag + ': ' + b + topHashtag.text + 'result: ' + (hashtag === topHashtag.text));
               if(hashtag === topHashtag.text) {
                 topHashtag.count = topHashtag.count + 1
-              }
-              else {
-                let temp = {}
-                temp.text = hashtag
-                temp.count = 1
-                topHashtags.push(temp)
+                dup = true
               }
             })
+            if(!dup) {
+              let temp = {}
+              temp.text = hashtag
+              temp.count = 1
+              topHashtags.push(temp)
+            }
           })
         }
       })
