@@ -6,7 +6,7 @@ import twitterRouter from './controller/TwitterController'
 import { Twitter } from './model/Twitter'
 
 
-const port = process.env.port || 7777
+const port = process.env.port || 7774
 let app = express()
 
 
