@@ -70,7 +70,7 @@ export function getTopFiveHashtag() {
       })
       let topFiveHashtag = new Array(5)
       rankHashtag.slice(0, 5).forEach((hashtag, index) => {
-        topFiveHashtag[index] = hashtag.text
+        topFiveHashtag[index] = '#' + hashtag.text
       })
       resolve(topFiveHashtag)
     })
