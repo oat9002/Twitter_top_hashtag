@@ -1,7 +1,5 @@
-// twitter model
+// topHashtags model
 
 // {
-//   tweetID: TEXT,
-//   text: TEXT,
-//   textCreatedDate: TEXT,
+//   hashtags: Array,
 // }

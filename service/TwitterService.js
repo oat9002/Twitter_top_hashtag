@@ -79,26 +79,18 @@ export function getTopFiveHashtag() {
     })
   })
 }
-//save tweets every 30 minutes
-// let saveTweetJob = new cronJob('* */30 * * * *', () => {
-//   getAllQuery().then(docs => {
-//     docs.forEach(item => {
-//       T.get('search/tweets', { q: item.query}, (err, data) => {
-//         if(err) {
-//           console.log(err.stack)
-//         }
-//         else {
-//           saveTweet(data)
-//         }
-//       })
-//     })
-//   })
-//   .catch((err) => {
-//     console.log(err)
+
+// function saveHastags(hashtags) {
+//   db.topHashtags.insert({hashtags: hashtags})
+// }
+// //save hashtags every 30 minutes
+// let saveHastagsJob = new cronJob('* */30 * * * *', () => {
+//   getTopFiveHashtag().then(topFive => {
+//     saveHastags(topFive)
 //   })
 // },
 // () => {
-//   console.log('saveTweetJob has stopped')
+//   console.log('saveHastagsJob has stopped')
 // },
 // true
 // )
