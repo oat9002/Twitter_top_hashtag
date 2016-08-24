@@ -62,7 +62,7 @@ export function getRankHashtag() {
   })
 }
 
-export function getTopFiveHashtag() {
+function generateTopFiveHashtag() {
   return new Promise((resolve, reject) => {
     getRankHashtag().then(rankHashtag => {
       rankHashtag.sort((a, b) => {
@@ -72,6 +72,7 @@ export function getTopFiveHashtag() {
       rankHashtag.slice(0, 5).forEach((hashtag, index) => {
         topFiveHashtag[index] = '#' + hashtag.text
       })
+      saveHastags(topFiveHashtag)
       resolve(topFiveHashtag)
     })
     .catch(err => {
@@ -80,12 +81,25 @@ export function getTopFiveHashtag() {
   })
 }
 
-// function saveHastags(hashtags) {
-//   db.topHashtags.insert({hashtags: hashtags})
-// }
-// //save hashtags every 30 minutes
+export function getTopFiveHashtag() {
+  return new Promise((resolve, reject) => {
+    db.topHashtags.find().sort({_id: -1}).limit(1, (err, document) => {
+      if(!err) {
+        resolve(document[0].hashtags)
+      }
+      else{
+        reject(err)
+      }
+    })
+  })
+}
+
+function saveHastags(hashtags) {
+  db.topHashtags.insert({hashtags: hashtags})
+}
+//save hashtags every 30 minutes
 // let saveHastagsJob = new cronJob('* */30 * * * *', () => {
-//   getTopFiveHashtag().then(topFive => {
+//   generateTopFiveHashtag().then(topFive => {
 //     saveHastags(topFive)
 //   })
 // },
