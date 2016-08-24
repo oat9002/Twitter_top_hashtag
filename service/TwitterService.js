@@ -72,7 +72,6 @@ function generateTopFiveHashtag() {
       rankHashtag.slice(0, 5).forEach((hashtag, index) => {
         topFiveHashtag[index] = '#' + hashtag.text
       })
-      saveHastags(topFiveHashtag)
       resolve(topFiveHashtag)
     })
     .catch(err => {
@@ -97,14 +96,14 @@ export function getTopFiveHashtag() {
 function saveHastags(hashtags) {
   db.topHashtags.insert({hashtags: hashtags})
 }
-//save hashtags every 30 minutes
-// let saveHastagsJob = new cronJob('* */30 * * * *', () => {
-//   generateTopFiveHashtag().then(topFive => {
-//     saveHastags(topFive)
-//   })
-// },
-// () => {
-//   console.log('saveHastagsJob has stopped')
-// },
-// true
-// )
+// save hashtags every 15 minutes
+let saveHastagsJob = new cronJob('0 */15 * * * *', () => {
+  generateTopFiveHashtag().then(topFive => {
+    saveHastags(topFive)
+  })
+},
+() => {
+  console.log('saveHastagsJob has stopped')
+},
+true
+)
