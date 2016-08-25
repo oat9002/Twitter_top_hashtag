@@ -5,7 +5,7 @@ import * as TwitterService from '../service/TwitterService'
 let twitterRouter = express.Router()
 
 twitterRouter.route('/').get((req, res) => {
-  res.send('<h1>Hello Twitter top hashtag service</h1>')
+  res.send('<h1>Hello Twitter top anything service</h1>')
 })
 
 twitterRouter.route('/getHashtag').get((req, res) => {
@@ -23,6 +23,12 @@ twitterRouter.route('/getRankHashtag').get((req, res) => {
 twitterRouter.route('/getTopFiveHashtag').get((req, res) => {
   TwitterService.getTopFiveHashtag().then(topFiveHashtag => {
     res.send({hashtags: topFiveHashtag})
+  })
+})
+
+twitterRouter.route('/getFiveLatestTweet').get((req, res) => {
+  TwitterService.getFiveLatestTweet().then(tweets => {
+    res.send({tweets: tweets})
   })
 })
 

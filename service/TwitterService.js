@@ -7,7 +7,7 @@ let cronJob = cron.CronJob
 
 export function getHashtag() {
   return new Promise((resolve, reject) => {
-    db.twitter.find((err, document) => {
+    db.tweet.find((err, document) => {
       if(!err) {
         let hashtags = new Array(document.length)
         document.forEach((item, index)=> {
@@ -93,17 +93,62 @@ export function getTopFiveHashtag() {
   })
 }
 
+function generateFiveLatestTweet() {
+  return new Promise((resolve, reject) => {
+    db.tweet.find().sort({created_at: -1}).limit(5, (err, document) => {
+      if(!err) {
+        resolve(document)
+      }
+      else {
+        reject(err)
+      }
+    })
+  })
+}
+
+export function getFiveLatestTweet() {
+  return new Promise((resolve, reject) => {
+    db.latestTweet.find().sort({_id: -1}).limit(1, (err, document) => {
+      if(!err) {
+        resolve(document[0].tweets)
+      }
+      else{
+        reject(err)
+      }
+    })
+  })
+}
+
+//save method
+
 function saveHastags(hashtags) {
   db.topHashtags.insert({hashtags: hashtags})
 }
+
+export function saveLatestTweet(tweets) {
+  db.latestTweet.insert({tweets: tweets})
+}
+
 // save hashtags every 15 minutes
-let saveHastagsJob = new cronJob('0 */15 * * * *', () => {
+let saveHastagsJob = new cronJob('*/32 * * * * *', () => {
   generateTopFiveHashtag().then(topFive => {
     saveHastags(topFive)
   })
 },
 () => {
   console.log('saveHastagsJob has stopped')
+},
+true
+)
+
+// save latestTweet every 15 minutes
+let saveLatestTweetJob = new cronJob('*/32 * * * * *', () => {
+  generateFiveLatestTweet().then(tweets => {
+    saveLatestTweet(tweets)
+  })
+},
+() => {
+  console.log('saveLatestTweetJob has stopped')
 },
 true
 )
